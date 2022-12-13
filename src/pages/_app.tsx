@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { Auth0Provider } from "@auth0/auth0-react";
+import "../styles/globals.scss";
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }: AppProps) => {
   const redirectUri = `${process.env["NEXT_PUBLIC_BASE_URL"]}`;
