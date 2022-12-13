@@ -4,11 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import { RepositoryFactory } from "src/repositories/RepositoryFactory";
 
 export const Header: FC = () => {
-  const userRepository = RepositoryFactory.get("user");
-
   const {
     isAuthenticated,
     loginWithRedirect,
