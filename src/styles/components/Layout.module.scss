@@ -3,14 +3,25 @@
 
 .mainContainer {
   width: 100vw;
-  height: 100vh;
-  padding: 15px 25px 20px 25px;
+  height: calc(100vh - 109px);
   background-color: colors.$bg_black;
+  overflow: scroll;
+  box-sizing: content-box;
+
+  @include mixin.mq(tab) {
+    height: calc(100vh - 65px);
+  }
 }
 
 .mainWrapper {
+  width: 350px;
+  margin: 0 auto;
+
   @include mixin.mq(tab) {
-    max-width: 970px;
-    margin: 0 auto;
+    width: 700px;
+  }
+
+  @include mixin.mq(pc) {
+    width: 970px;
   }
 }

@@ -3,7 +3,7 @@ import styles from "@styles/components/Header.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from "axios";
+import { userFactory } from "src/models/User";
 
 export const Header: FC = () => {
   const {
@@ -17,18 +17,19 @@ export const Header: FC = () => {
   useEffect(() => {
     (async () => {
       if (!isAuthenticated || !user) return;
+      if (!user.sub || !user.email) return;
       const token = await getAccessTokenSilently();
       console.log(token);
 
       try {
-        const res = await axios.get(`http://localhost:3011/users/${user.sub}`);
-        const userData = res.data;
+        const userData = await userFactory().findById(user.sub);
 
         if (!userData) {
-          await axios.post("http://localhost:3011/users", {
+          const params = {
             id: user.sub,
             mail: user.email,
-          });
+          };
+          await userFactory().createUser(params);
         }
       } catch {
         console.log("error");

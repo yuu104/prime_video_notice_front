@@ -3,17 +3,24 @@
 
 .container {
   width: 100vw;
-  padding: 15px 25px 20px 25px;
+  // padding: 15px 25px 20px 25px;
+  padding: 15px 0 20px 0;
   background-color: colors.$header_bg_black;
 }
 
 .wrapper {
+  width: 350px;
+  margin: 0 auto;
+
   @include mixin.mq(tab) {
     display: flex;
     gap: 45px;
     align-items: center;
-    max-width: 970px;
-    margin: 0 auto;
+    width: 700px;
+  }
+
+  @include mixin.mq(pc) {
+    width: 970px;
   }
 }
 
