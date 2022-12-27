@@ -157,4 +157,9 @@
     width: 150px;
     height: 35px;
   }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
 }

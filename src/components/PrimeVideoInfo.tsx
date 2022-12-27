@@ -102,7 +102,11 @@ export const PrimeVideoInfo: FC<PrimeVideoInfoProps> = ({
               </div>
             </div>
           </div>
-          <button className={styles.registerButton} onClick={register}>
+          <button
+            className={styles.registerButton}
+            onClick={register}
+            disabled={!(is_available && !isLeavingSoon)}
+          >
             リストへ登録
           </button>
           <div className={styles.description}>
