@@ -1,0 +1,107 @@
+@use "../colors.scss" as colors;
+@use "../mixin.scss" as mixin;
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: colors.$white;
+  margin: 20px 0 25px 0;
+
+  @include mixin.mq(tab) {
+    font-size: 28px;
+    margin: 35px 0 25px 0;
+  }
+}
+
+.tabs {
+  width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 1px solid colors.$white;
+}
+
+.tabItem {
+  font-size: 12px;
+  color: colors.$white;
+
+  @include mixin.mq(tab) {
+    font-size: 14px;
+  }
+}
+
+.noVideos {
+  font-size: 20px;
+  font-weight: 600;
+  color: colors.$text_darkGray;
+  text-align: center;
+  margin-top: 200px;
+
+  @include mixin.mq(tab) {
+    font-size: 24px;
+  }
+}
+
+.videoList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 25px 0;
+
+  @include mixin.mq(tab) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.videoItem {
+  display: flex;
+  height: 120px;
+  background-color: colors.$modal_contents;
+
+  @include mixin.mq(tab) {
+    height: 150px;
+  }
+
+  @include mixin.mq(pc) {
+    height: 180px;
+  }
+}
+
+.videoImage {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100%;
+
+  @include mixin.mq(tab) {
+    width: 120px;
+  }
+}
+
+.videoItemRightBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  gap: 30px;
+}
+
+.videoTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: colors.$white;
+}
+
+.deleteButton {
+  font-size: 12px;
+  color: colors.$text_brack;
+  width: 90px;
+  height: 30px;
+  background-color: colors.$yellow;
+  border-radius: 6px;
+
+  @include mixin.mq(tab) {
+    font-size: 14px;
+    width: 100px;
+    height: 38px;
+  }
+}

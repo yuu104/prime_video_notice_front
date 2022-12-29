@@ -10,7 +10,7 @@ export type VideoRepository = {
     authRequestHeader: AuthRequestHeader,
   ) => Promise<void>;
   deleteVideo: (
-    params: Pick<videos, "id">,
+    id: number,
     authRequestHeader: AuthRequestHeader,
   ) => Promise<void>;
 };
@@ -39,11 +39,9 @@ const createVideo = async (
 };
 
 const deleteVideo = (
-  params: Pick<videos, "id">,
+  id: number,
   authRequestHeader: AuthRequestHeader,
 ): Promise<void> => {
-  const { id } = params;
-
   return instance.delete(`${resorce}/${id}`, { headers: authRequestHeader });
 };
 

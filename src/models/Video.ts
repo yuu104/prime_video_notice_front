@@ -21,10 +21,10 @@ export const videoFactory = () => {
       await videoRepository.createVideo(params, authRequestHeader);
     },
     deleteVideo: async (
-      params: Pick<videos, "id">,
+      id: number,
       authRequestHeader: AuthRequestHeader,
     ): Promise<void> => {
-      await videoRepository.deleteVideo(params, authRequestHeader);
+      await videoRepository.deleteVideo(id, authRequestHeader);
     },
   };
 };
