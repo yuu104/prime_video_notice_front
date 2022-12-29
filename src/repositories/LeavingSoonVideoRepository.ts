@@ -5,7 +5,7 @@ export type LeavingSoonVideoRepository = {
 };
 
 const instance = axios.create({
-  baseURL: "http://localhost:3010/backend_api",
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/backend_api`,
 });
 
 const resorce = "leaving_soon_videos";

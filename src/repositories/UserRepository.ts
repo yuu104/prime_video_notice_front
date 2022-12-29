@@ -8,7 +8,7 @@ export type UserRepository = {
 };
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_API,
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/backend_api`,
 });
 
 const resorce = "/users";
