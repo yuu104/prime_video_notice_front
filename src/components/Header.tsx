@@ -1,41 +1,11 @@
-import { FC, useEffect } from "react";
+import { FC, memo } from "react";
 import styles from "@styles/components/Header.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
-import { userFactory } from "src/models/User";
 
-export const Header: FC = () => {
-  const {
-    isAuthenticated,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-    user,
-  } = useAuth0();
-
-  useEffect(() => {
-    (async () => {
-      if (!isAuthenticated || !user) return;
-      if (!user.sub || !user.email) return;
-      const token = await getAccessTokenSilently();
-      console.log(token);
-
-      try {
-        const userData = await userFactory().findById(user.sub);
-
-        if (!userData) {
-          const params = {
-            id: user.sub,
-            mail: user.email,
-          };
-          await userFactory().createUser(params);
-        }
-      } catch {
-        console.log("error");
-      }
-    })();
-  }, [isAuthenticated]);
+export const Header: FC = memo(() => {
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
   return (
     <header className={styles.container}>
@@ -108,4 +78,4 @@ export const Header: FC = () => {
       </div>
     </header>
   );
-};
+});
