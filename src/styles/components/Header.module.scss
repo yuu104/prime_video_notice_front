@@ -60,6 +60,10 @@
       color: colors.$text_darkGray;
       text-decoration: none;
     }
+
+    .active {
+      color: colors.$white;
+    }
   }
 
   @include mixin.mq(tab) {

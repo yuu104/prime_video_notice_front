@@ -3,9 +3,12 @@ import styles from "@styles/components/Header.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useRouter } from "next/router";
 
 export const Header: FC = memo(() => {
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
+  const { pathname } = useRouter();
 
   return (
     <header className={styles.container}>
@@ -19,10 +22,10 @@ export const Header: FC = memo(() => {
         <div className={styles.navContainer}>
           <nav>
             <ul>
-              <li>
+              <li className={`${pathname === "/register" && styles.active}`}>
                 <Link href="/register">リスト登録</Link>
               </li>
-              <li>
+              <li className={`${pathname === "/notice_list" && styles.active}`}>
                 <Link href="/notice_list">リスト表示</Link>
               </li>
             </ul>
