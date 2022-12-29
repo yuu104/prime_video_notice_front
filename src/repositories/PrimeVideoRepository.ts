@@ -6,7 +6,7 @@ export type PrimeVideoRepository = {
 };
 
 const instance = axios.create({
-  baseURL: "http://localhost:3010/prime_video_api",
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/prime_video_api`,
 });
 
 const resorce = "prime_videos";
