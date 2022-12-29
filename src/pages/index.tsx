@@ -1,8 +1,8 @@
 import { NextPage } from "next";
-import styles from "@styles/pages/Home.module.scss";
+import { Home } from "src/components/pages/Home";
 
-const Home: NextPage = () => {
-  return <div className={styles.container}>Hello Next.js</div>;
+const HomePage: NextPage = () => {
+  return <Home />;
 };
 
-export default Home;
+export default HomePage;

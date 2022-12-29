@@ -1,0 +1,34 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model leaving_soon_videos {
+  id     Int    @id @default(autoincrement())
+  videos String @db.Text
+}
+
+model users {
+  id         String   @id
+  mail       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
+model videos {
+  id           Int      @id @default(autoincrement())
+  title        String
+  url          String   @db.Text
+  image        String?
+  is_available Boolean
+  is_notified  Boolean  @default(false)
+  user_id      String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now())
+}

@@ -1,0 +1,104 @@
+@use "../colors.scss" as colors;
+@use "../mixin.scss" as mixin;
+
+.container {
+  width: 100vw;
+  // padding: 15px 25px 20px 25px;
+  padding: 15px 0 20px 0;
+  background-color: colors.$header_bg_black;
+}
+
+.wrapper {
+  width: 350px;
+  margin: 0 auto;
+
+  @include mixin.mq(tab) {
+    display: flex;
+    gap: 45px;
+    align-items: center;
+    width: 700px;
+  }
+
+  @include mixin.mq(pc) {
+    width: 970px;
+  }
+}
+
+.titleContainer {
+  margin-bottom: 20px;
+
+  @include mixin.mq(tab) {
+    margin-bottom: 0;
+  }
+}
+
+.titleLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  span {
+    font-size: 20px;
+    font-weight: 500;
+    color: colors.$yellow;
+    text-decoration: none;
+  }
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  ul {
+    display: flex;
+    gap: 25px;
+
+    li {
+      font-size: 14px;
+      color: colors.$text_darkGray;
+      text-decoration: none;
+    }
+
+    .active {
+      color: colors.$white;
+    }
+  }
+
+  @include mixin.mq(tab) {
+    flex-grow: 1;
+  }
+}
+
+.authButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100px;
+  height: 30px;
+  padding: 0 5px;
+  background-color: colors.$button_black;
+  border-radius: 6px;
+}
+
+.authButtonLeft {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  span {
+    font-size: 10px;
+    color: colors.$white;
+  }
+}
+
+.userIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 18px;
+  height: 18px;
+  background-color: colors.$white;
+  border-radius: 50%;
+}
