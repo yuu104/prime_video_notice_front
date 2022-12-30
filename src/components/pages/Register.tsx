@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState, MouseEvent, useCallback } from "react";
+import { FC, FormEvent, useState, MouseEvent, useCallback, memo } from "react";
 import { Layout } from "../Layout";
 import styles from "@styles/pages/Register.module.scss";
 import Image from "next/image";
@@ -6,21 +6,29 @@ import { NextImage } from "../NextImage";
 import { PrimeVideo, primeVideoFactory } from "src/models/PrimeVideo";
 import { Modal } from "../Modal";
 import { PrimeVideoInfo } from "../PrimeVideoInfo";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export const Register: FC = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   const [primeVideos, setPrimeVideos] = useState<PrimeVideo[]>();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const searchVideo = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!searchKeyword) alert("作品タイトルを入力してください");
 
+    setIsLoading(true);
+
     const primeVideoData = await primeVideoFactory().searchVideos({
       keyword: searchKeyword,
     });
     setPrimeVideos(primeVideoData);
+
+    setIsLoading(false);
   };
 
   return (
@@ -45,6 +53,7 @@ export const Register: FC = () => {
         </div>
       </form>
       <div className={styles.searchResults}>
+        {isLoading && <SkeletonVideoCards />}
         {primeVideos &&
           primeVideos.map((video, index) => (
             <VideoCard key={`${video.title}-${index}`} video={video} />
@@ -99,3 +108,18 @@ const VideoCard: FC<VideoCardProps> = ({ video }) => {
     </>
   );
 };
+
+const SkeletonVideoCards: FC = memo(() => {
+  return (
+    <SkeletonTheme baseColor="#222222" highlightColor="#333333">
+      {[...Array(16)].map((_, index) => (
+        <div key={index} className={styles.videoImageContainer}>
+          <Skeleton className={styles.videoImage} />
+          <div className={styles.videoTitle}>
+            <Skeleton />
+          </div>
+        </div>
+      ))}
+    </SkeletonTheme>
+  );
+});
