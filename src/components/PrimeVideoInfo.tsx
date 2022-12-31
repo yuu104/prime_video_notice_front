@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import styles from "@styles/components/PrimeVideoInfo.module.scss";
 import { NextImage } from "./NextImage";
 import Link from "next/link";
@@ -7,6 +7,8 @@ import { leavingSoonVideoFactory } from "src/models/LeavingSoonVideo";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAuthRequestHeader } from "src/hooks/useAuthRequestHeader";
 import { videoFactory } from "src/models/Video";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 type PrimeVideoInfoProps = {
   closeModal: () => void;
@@ -56,10 +58,12 @@ export const PrimeVideoInfo: FC<PrimeVideoInfoProps> = ({
     }
   };
 
-  if (typeof isLeavingSoon === "undefined")
-    return <div className={styles.title}>データ取得中</div>;
+  if (error) {
+    alert("データの取得に失敗しました");
+    closeModal();
+  }
 
-  if (error) return <div className={styles.title}>エラー</div>;
+  if (typeof isLeavingSoon === "undefined") return <SkeletonBoard />;
 
   return (
     <div className={styles.container}>
@@ -117,3 +121,34 @@ export const PrimeVideoInfo: FC<PrimeVideoInfoProps> = ({
     </div>
   );
 };
+
+const SkeletonBoard: FC = memo(() => {
+  return (
+    <SkeletonTheme baseColor="#222222" highlightColor="#333333">
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <div className={`${styles.title} ${styles.titleSp}`}>
+            <Skeleton width={230} />
+          </div>
+          <div className={styles.imageConteiner}>
+            <Skeleton className={styles.imageLink} />
+          </div>
+          <div className={styles.leftBox}>
+            <div className={`${styles.title} ${styles.titleTab}`}>
+              <Skeleton width={230} />
+            </div>
+            <div className={styles.details}>
+              <div className={styles.detailsItem}>
+                <Skeleton width={120} />
+              </div>
+              <div className={styles.detailsItem}>
+                <Skeleton width={120} />
+              </div>
+            </div>
+            <Skeleton width={140} height={32} />
+          </div>
+        </div>
+      </div>
+    </SkeletonTheme>
+  );
+});

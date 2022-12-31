@@ -32,7 +32,7 @@ export const NoticeList: FC = () => {
       <ul className={styles.tabs}>
         <li className={styles.tabItem}>配信終了予定になったら通知</li>
       </ul>
-      {videos ? (
+      {videos && videos.length ? (
         <div className={styles.videoList}>
           {videos.map((video) => (
             <div key={video.id} className={styles.videoItem}>
