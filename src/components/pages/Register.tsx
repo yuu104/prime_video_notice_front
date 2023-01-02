@@ -8,8 +8,11 @@ import { Modal } from "../Modal";
 import { PrimeVideoInfo } from "../PrimeVideoInfo";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useFetchLeavingSoonVideos } from "src/hooks/useFetchLeavingSoonVideos";
 
 export const Register: FC = () => {
+  const { leavingSoonVideos } = useFetchLeavingSoonVideos();
+
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   const [primeVideos, setPrimeVideos] = useState<PrimeVideo[]>();
@@ -56,7 +59,11 @@ export const Register: FC = () => {
         {isLoading && <SkeletonVideoCards />}
         {primeVideos &&
           primeVideos.map((video, index) => (
-            <VideoCard key={`${video.title}-${index}`} video={video} />
+            <VideoCard
+              key={`${video.title}-${index}`}
+              video={video}
+              leavingSoonVideos={leavingSoonVideos}
+            />
           ))}
       </div>
     </Layout>
@@ -65,9 +72,10 @@ export const Register: FC = () => {
 
 type VideoCardProps = {
   video: PrimeVideo;
+  leavingSoonVideos?: string[];
 };
 
-const VideoCard: FC<VideoCardProps> = ({ video }) => {
+const VideoCard: FC<VideoCardProps> = memo(({ video, leavingSoonVideos }) => {
   const { title, image, url, is_available } = video;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -102,12 +110,13 @@ const VideoCard: FC<VideoCardProps> = ({ video }) => {
             image={image}
             is_available={is_available}
             closeModal={closeModal}
+            leavingSoonVideos={leavingSoonVideos}
           />
         </Modal>
       )}
     </>
   );
-};
+});
 
 const SkeletonVideoCards: FC = memo(() => {
   return (
