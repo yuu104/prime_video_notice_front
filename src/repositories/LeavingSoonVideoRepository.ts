@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export type LeavingSoonVideoRepository = {
-  getIsLeavingSoon: (title: string) => Promise<boolean>;
+  getLeavingSoonVideos: () => Promise<string[]>;
 };
 
 const instance = axios.create({
@@ -10,12 +10,12 @@ const instance = axios.create({
 
 const resorce = "leaving_soon_videos";
 
-const getIsLeavingSoon = async (title: string): Promise<boolean> => {
-  const response = await instance.get(`/${resorce}/${title}`);
+const getLeavingSoonVideos = async (): Promise<string[]> => {
+  const response = await instance.get(`/${resorce}`);
 
   return response.data;
 };
 
 export const leavingSoonVideoRepository: LeavingSoonVideoRepository = {
-  getIsLeavingSoon,
+  getLeavingSoonVideos,
 };

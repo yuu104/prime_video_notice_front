@@ -2,8 +2,8 @@ import { leavingSoonVideoRepository } from "src/repositories/LeavingSoonVideoRep
 
 export const leavingSoonVideoFactory = () => {
   return {
-    getIsLeavingSoon: (title: string): Promise<boolean> => {
-      return leavingSoonVideoRepository.getIsLeavingSoon(title);
+    getLeavingSoonVideos: (): Promise<string[]> => {
+      return leavingSoonVideoRepository.getLeavingSoonVideos();
     },
   };
 };

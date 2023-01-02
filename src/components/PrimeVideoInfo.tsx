@@ -1,9 +1,7 @@
-import { FC, memo } from "react";
+import { FC, memo, useEffect, useState } from "react";
 import styles from "@styles/components/PrimeVideoInfo.module.scss";
 import { NextImage } from "./NextImage";
 import Link from "next/link";
-import useSwr from "swr";
-import { leavingSoonVideoFactory } from "src/models/LeavingSoonVideo";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAuthRequestHeader } from "src/hooks/useAuthRequestHeader";
 import { videoFactory } from "src/models/Video";
@@ -16,10 +14,7 @@ type PrimeVideoInfoProps = {
   url: string;
   image: string;
   is_available: boolean;
-};
-
-const fetchIsLeavingSoon = (key: string): Promise<boolean> => {
-  return leavingSoonVideoFactory().getIsLeavingSoon(key);
+  leavingSoonVideos?: string[];
 };
 
 export const PrimeVideoInfo: FC<PrimeVideoInfoProps> = ({
@@ -28,12 +23,21 @@ export const PrimeVideoInfo: FC<PrimeVideoInfoProps> = ({
   url,
   image,
   is_available,
+  leavingSoonVideos,
 }) => {
-  const { data: isLeavingSoon, error } = useSwr(title, fetchIsLeavingSoon);
-
   const { isAuthenticated } = useAuth0();
 
   const { getAuthRequestHeader } = useAuthRequestHeader();
+
+  const [isLeavingSoon, setIsLeavingSoon] = useState<boolean>();
+
+  useEffect(() => {
+    if (leavingSoonVideos?.find((item) => item === title)) {
+      setIsLeavingSoon(true);
+    } else {
+      setIsLeavingSoon(false);
+    }
+  }, [leavingSoonVideos]);
 
   const register = async () => {
     if (!isAuthenticated) {
@@ -57,11 +61,6 @@ export const PrimeVideoInfo: FC<PrimeVideoInfoProps> = ({
       alert("登録に失敗しました");
     }
   };
-
-  if (error) {
-    alert("データの取得に失敗しました");
-    closeModal();
-  }
 
   if (typeof isLeavingSoon === "undefined") return <SkeletonBoard />;
 
