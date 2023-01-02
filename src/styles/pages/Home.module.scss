@@ -1,6 +1,113 @@
-.container {
+@use "../colors.scss" as colors;
+@use "../mixin.scss" as mixin;
+
+.titleBox {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 15px;
+  margin: 20px 0 50px 0;
+
+  @include mixin.mq(tab) {
+    gap: 30px;
+    margin: 45px 0 80px 0;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    color: colors.$white;
+
+    @include mixin.mq(tab) {
+      font-size: 30px;
+    }
+  }
+
+  .description {
+    font-size: 13px;
+
+    @include mixin.mq(tab) {
+      font-size: 24px;
+    }
+  }
+}
+
+.description {
+  color: colors.$text_darkGray;
+}
+
+.sectionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  padding-bottom: 50px;
+
+  @include mixin.mq(tab) {
+    gap: 100px;
+  }
+}
+
+.sectionBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  @include mixin.mq(tab) {
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .description {
+    font-size: 12px;
+
+    @include mixin.mq(tab) {
+      font-size: 20px;
+    }
+  }
+}
+
+.sectionBoxReverse {
+  @include mixin.mq(tab) {
+    flex-direction: row-reverse;
+  }
+}
+
+.imageContainer {
+  flex-shrink: 0;
+  width: 325px;
+  height: 220px;
+  border: 1px solid colors.$text_darkGray;
+  border-radius: 6px;
+  overflow: hidden;
+
+  @include mixin.mq(tab) {
+    width: 450px;
+    height: 300px;
+  }
+}
+
+.descContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+
+  @include mixin.mq(tab) {
+    gap: 30px;
+  }
+}
+
+.descTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: colors.$white;
+  margin: 0;
+
+  @include mixin.mq(tab) {
+    font-size: 26px;
+  }
 }
