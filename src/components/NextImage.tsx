@@ -10,7 +10,7 @@ type NextImageProps = {
 export const NextImage: FC<NextImageProps> = ({ src, alt }) => {
   return (
     <div className={styles.container}>
-      <Image src={src} alt={alt} fill sizes="100%" className={styles.image} />
+      <Image src={src} sizes="100vw" alt={alt} fill className={styles.image} />
     </div>
   );
 };
