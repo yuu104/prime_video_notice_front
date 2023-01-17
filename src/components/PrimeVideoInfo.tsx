@@ -7,6 +7,7 @@ import { useAuthRequestHeader } from "src/hooks/useAuthRequestHeader";
 import { videoFactory } from "src/models/Video";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useFetchLeavingSoonVideos } from "src/hooks/useFetchLeavingSoonVideos";
 
 type PrimeVideoInfoProps = {
   closeModal: () => void;
@@ -14,7 +15,6 @@ type PrimeVideoInfoProps = {
   url: string;
   image: string;
   is_available: boolean;
-  leavingSoonVideos?: string[];
 };
 
 export const PrimeVideoInfo: FC<PrimeVideoInfoProps> = ({
@@ -23,11 +23,12 @@ export const PrimeVideoInfo: FC<PrimeVideoInfoProps> = ({
   url,
   image,
   is_available,
-  leavingSoonVideos,
 }) => {
   const { isAuthenticated } = useAuth0();
 
   const { getAuthRequestHeader } = useAuthRequestHeader();
+
+  const { leavingSoonVideos } = useFetchLeavingSoonVideos();
 
   const [isLeavingSoon, setIsLeavingSoon] = useState<boolean>();
 

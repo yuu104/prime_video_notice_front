@@ -1,8 +1,8 @@
 import { NextPage } from "next";
-import { Register } from "src/components/pages/Register";
+import { RegisterContainer } from "src/components/pages/Register";
 
 const RegisterPage: NextPage = () => {
-  return <Register />;
+  return <RegisterContainer />;
 };
 
 export default RegisterPage;
