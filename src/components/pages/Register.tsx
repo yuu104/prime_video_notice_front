@@ -13,7 +13,7 @@ import Image from "next/image";
 import { NextImage } from "../NextImage";
 import { PrimeVideo, primeVideoFactory } from "src/models/PrimeVideo";
 import { Modal } from "../Modal";
-import { PrimeVideoInfo } from "../PrimeVideoInfo";
+import { PrimeVideoInfoContainer } from "../PrimeVideoInfo";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -112,7 +112,7 @@ type VideoCardProps = {
 };
 
 const VideoCard: FC<VideoCardProps> = memo(({ video }) => {
-  const { title, image, url, is_available } = video;
+  const { title, image } = video;
 
   const [isOpenModal, setIsOpenModal] = useState(false);
 
@@ -142,13 +142,7 @@ const VideoCard: FC<VideoCardProps> = memo(({ video }) => {
       </div>
       {isOpenModal && (
         <Modal closeModal={closeModalByOutClick}>
-          <PrimeVideoInfo
-            title={title}
-            url={url}
-            image={image}
-            is_available={is_available}
-            closeModal={closeModal}
-          />
+          <PrimeVideoInfoContainer video={video} closeModal={closeModal} />
         </Modal>
       )}
     </>
