@@ -1,31 +1,44 @@
-import { FC } from "react";
+import { FC, memo, useCallback } from "react";
 import { useFetchVideo } from "src/hooks/useFetchVideo";
 import { Layout } from "../Layout";
 import styles from "@styles/pages/NoticeList.module.scss";
 import { NextImage } from "../NextImage";
 import { videoFactory } from "src/models/Video";
 import { useAuthRequestHeader } from "src/hooks/useAuthRequestHeader";
+import { videos } from "@prisma/client";
 
-export const NoticeList: FC = () => {
+export const NoticeListContainer: FC = () => {
   const { videos, error, mutate } = useFetchVideo();
 
   const { getAuthRequestHeader } = useAuthRequestHeader();
 
-  const deleteVideo = async (id: number) => {
-    try {
-      const authRequestHeader = await getAuthRequestHeader();
+  const deleteVideo = useCallback(
+    async (id: number) => {
+      try {
+        const authRequestHeader = await getAuthRequestHeader();
 
-      await videoFactory().deleteVideo(id, authRequestHeader);
+        await videoFactory().deleteVideo(id, authRequestHeader);
 
-      mutate(videos?.filter((video) => video.id !== id));
-    } catch (e) {
-      console.log(e);
-      alert("削除に失敗しました");
-    }
-  };
+        mutate(videos?.filter((video) => video.id !== id));
+      } catch (e) {
+        console.log(e);
+        alert("削除に失敗しました");
+      }
+    },
+    [videos],
+  );
 
   if (error) return <div>error</div>;
 
+  return <NoticeList videos={videos} deleteVideo={deleteVideo} />;
+};
+
+type NoticeListProps = {
+  videos?: videos[];
+  deleteVideo: (id: number) => Promise<void>;
+};
+
+const NoticeList: FC<NoticeListProps> = memo(({ videos, deleteVideo }) => {
   return (
     <Layout>
       <h1 className={styles.title}>リスト表示</h1>
@@ -56,4 +69,4 @@ export const NoticeList: FC = () => {
       )}
     </Layout>
   );
-};
+});

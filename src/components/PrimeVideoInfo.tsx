@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useState } from "react";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 import styles from "@styles/components/PrimeVideoInfo.module.scss";
 import { NextImage } from "./NextImage";
 import Link from "next/link";
@@ -7,119 +7,130 @@ import { useAuthRequestHeader } from "src/hooks/useAuthRequestHeader";
 import { videoFactory } from "src/models/Video";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useFetchLeavingSoonVideos } from "src/hooks/useFetchLeavingSoonVideos";
+import { PrimeVideo } from "src/models/PrimeVideo";
 
-type PrimeVideoInfoProps = {
+type PrimeVideoInfoContainerProps = {
+  video: PrimeVideo;
   closeModal: () => void;
-  title: string;
-  url: string;
-  image: string;
-  is_available: boolean;
-  leavingSoonVideos?: string[];
 };
 
-export const PrimeVideoInfo: FC<PrimeVideoInfoProps> = ({
+export const PrimeVideoInfoContainer: FC<PrimeVideoInfoContainerProps> = ({
+  video,
   closeModal,
-  title,
-  url,
-  image,
-  is_available,
-  leavingSoonVideos,
 }) => {
   const { isAuthenticated } = useAuth0();
 
   const { getAuthRequestHeader } = useAuthRequestHeader();
 
+  const { leavingSoonVideos } = useFetchLeavingSoonVideos();
+
   const [isLeavingSoon, setIsLeavingSoon] = useState<boolean>();
 
   useEffect(() => {
-    if (leavingSoonVideos?.find((item) => item === title)) {
+    if (leavingSoonVideos?.find((item) => item === video.title)) {
       setIsLeavingSoon(true);
     } else {
       setIsLeavingSoon(false);
     }
   }, [leavingSoonVideos]);
 
-  const register = async () => {
+  const register = useCallback(async () => {
     if (!isAuthenticated) {
       alert("リスト登録をするにはログインが必要です");
       return;
     }
-
     try {
       const authRequestHeader = await getAuthRequestHeader();
-      const requestBody = {
-        title,
-        url,
-        image,
-        is_available,
-      };
-      await videoFactory().createVideo(requestBody, authRequestHeader);
+      await videoFactory().createVideo(video, authRequestHeader);
 
       closeModal();
     } catch (e) {
       console.log(e);
       alert("登録に失敗しました");
     }
-  };
+  }, [isAuthenticated, video]);
 
   if (typeof isLeavingSoon === "undefined") return <SkeletonBoard />;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.closeIcon} onClick={closeModal}>
-        <NextImage src={"/xmark-white.svg"} alt={"xmark-white"} />
-      </div>
-      <div className={styles.wrapper}>
-        <div className={`${styles.title} ${styles.titleSp}`}>{title}</div>
-        <div className={styles.imageConteiner}>
-          <Link href={url}>
-            <div className={styles.imageLink}>
-              <NextImage src={image} alt={title} />
-            </div>
-          </Link>
-          <div className={styles.description}>
-            画像をクリックしてサイトへ移動
-          </div>
-        </div>
-        <div className={styles.leftBox}>
-          <div className={`${styles.title} ${styles.titleTab}`}>{title}</div>
-          <div className={styles.details}>
-            <div className={styles.detailsItem}>
-              <span>無料で閲覧可能：</span>
-              <div className={styles.cicleOrXmarkIcon}>
-                {is_available ? (
-                  <NextImage src={"/circle.svg"} alt={"circle-icon"} />
-                ) : (
-                  <NextImage src={"/xmark-red.svg"} alt={"xmark-red-icon"} />
-                )}
-              </div>
-            </div>
-            <div className={styles.detailsItem}>
-              <span>配信終了予定：</span>
-              <div className={styles.cicleOrXmarkIcon}>
-                {isLeavingSoon ? (
-                  <NextImage src={"/circle.svg"} alt={"circle-icon"} />
-                ) : (
-                  <NextImage src={"/xmark-red.svg"} alt={"xmark-red-icon"} />
-                )}
-              </div>
-            </div>
-          </div>
-          <button
-            className={styles.registerButton}
-            onClick={register}
-            disabled={!(is_available && !isLeavingSoon)}
-          >
-            リストへ登録
-          </button>
-          <div className={styles.description}>
-            配信終了予定になるとメールでお知らせします
-          </div>
-        </div>
-      </div>
-    </div>
+    <PrimeVideoInfo
+      video={video}
+      isLeavingSoon={isLeavingSoon}
+      closeModal={closeModal}
+      register={register}
+    />
   );
 };
+
+type PrimeVideoInfoProps = {
+  video: PrimeVideo;
+  isLeavingSoon: boolean;
+  closeModal: () => void;
+  register: () => Promise<void>;
+};
+
+const PrimeVideoInfo: FC<PrimeVideoInfoProps> = memo(
+  ({ video, isLeavingSoon, closeModal, register }) => {
+    const { title, image, url, is_available } = video;
+
+    return (
+      <div className={styles.container}>
+        <div className={styles.closeIcon} onClick={closeModal}>
+          <NextImage src={"/xmark-white.svg"} alt={"xmark-white"} />
+        </div>
+        <div className={styles.wrapper}>
+          <div className={`${styles.title} ${styles.titleSp}`}>{title}</div>
+          <div className={styles.imageConteiner}>
+            <Link href={url}>
+              <div className={styles.imageLink}>
+                <NextImage src={image} alt={title} />
+              </div>
+            </Link>
+            <div className={styles.description}>
+              画像をクリックしてサイトへ移動
+            </div>
+          </div>
+          <div className={styles.leftBox}>
+            <div className={`${styles.title} ${styles.titleTab}`}>{title}</div>
+            <div className={styles.details}>
+              <div className={styles.detailsItem}>
+                <span>無料で閲覧可能：</span>
+                <div className={styles.cicleOrXmarkIcon}>
+                  {is_available ? (
+                    <NextImage src={"/circle.svg"} alt={"circle-icon"} />
+                  ) : (
+                    <NextImage src={"/xmark-red.svg"} alt={"xmark-red-icon"} />
+                  )}
+                </div>
+              </div>
+              <div className={styles.detailsItem}>
+                <span>配信終了予定：</span>
+                <div className={styles.cicleOrXmarkIcon}>
+                  {isLeavingSoon ? (
+                    <NextImage src={"/circle.svg"} alt={"circle-icon"} />
+                  ) : (
+                    <NextImage src={"/xmark-red.svg"} alt={"xmark-red-icon"} />
+                  )}
+                </div>
+              </div>
+            </div>
+            <button
+              className={styles.registerButton}
+              onClick={register}
+              disabled={!(is_available && !isLeavingSoon)}
+            >
+              リストへ登録
+            </button>
+            <div className={styles.description}>
+              配信終了予定になるとメールでお知らせします
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+);
 
 const SkeletonBoard: FC = memo(() => {
   return (
