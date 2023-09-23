@@ -46,7 +46,7 @@ export const PrimeVideoInfoContainer: FC<PrimeVideoInfoContainerProps> = ({
 
       closeModal();
     } catch (e) {
-      console.log(e);
+      console.error(e);
       alert("登録に失敗しました");
     }
   }, [isAuthenticated, video, getAuthRequestHeader, closeModal]);

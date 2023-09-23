@@ -21,7 +21,7 @@ export const NoticeListContainer: FC = () => {
 
         mutate(videos?.filter((video) => video.id !== id));
       } catch (e) {
-        console.log(e);
+        console.error(e);
         alert("削除に失敗しました");
       }
     },
