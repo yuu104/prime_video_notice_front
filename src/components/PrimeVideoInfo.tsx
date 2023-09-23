@@ -33,7 +33,7 @@ export const PrimeVideoInfoContainer: FC<PrimeVideoInfoContainerProps> = ({
     } else {
       setIsLeavingSoon(false);
     }
-  }, [leavingSoonVideos]);
+  }, [leavingSoonVideos, video.title]);
 
   const register = useCallback(async () => {
     if (!isAuthenticated) {
@@ -49,7 +49,7 @@ export const PrimeVideoInfoContainer: FC<PrimeVideoInfoContainerProps> = ({
       console.log(e);
       alert("登録に失敗しました");
     }
-  }, [isAuthenticated, video]);
+  }, [isAuthenticated, video, getAuthRequestHeader, closeModal]);
 
   if (typeof isLeavingSoon === "undefined") return <SkeletonBoard />;
 

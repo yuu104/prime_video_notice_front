@@ -25,7 +25,7 @@ export const NoticeListContainer: FC = () => {
         alert("削除に失敗しました");
       }
     },
-    [videos],
+    [videos, getAuthRequestHeader, mutate],
   );
 
   if (error) return <div>error</div>;
